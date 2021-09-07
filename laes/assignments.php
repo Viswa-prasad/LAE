@@ -67,7 +67,7 @@ session_start();
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Portfolio Details - Scaffold Bootstrap Template</title>
+  <title>Assignment | Learn and Earn</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -104,7 +104,7 @@ session_start();
     <div class="container d-flex align-items-center">
 
       <div class="logo me-auto">
-        <h1><a href="index.html">Scaffold</a></h1>
+        <h1><a href="index.html">Learn and Earn</a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>

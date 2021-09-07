@@ -9,6 +9,7 @@
         if(is_array($row))
         {
             $_SESSION["SID"] = $row['Student_Id'];
+            $_SESSION["student_id"]=$row['Student_Id'];
             header("Location: ../laes/index.php"); 
         }
         else

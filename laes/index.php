@@ -1,7 +1,12 @@
-<?php
-session_start();
+<?php 
+
 include "db_connect.php";
-if(isset($_SESSION['SID'])){
+session_start();
+
+if(isset($_SESSION['student_id']))
+{
+
+//echo "<script>window.alert('Hello')</script>";
 ?>
 <!DOCTYPE html>
 <style>
@@ -9,12 +14,13 @@ if(isset($_SESSION['SID'])){
     border: 2px solid #009CEA;
     font-family: "Raleway", sans-serif;
     padding-top: 6px;
-    /*margin-bottom: 3px;*/
+    /margin-bottom: 3px;/
 }
 
 .heading {
     font-weight: 900;
     padding-right: 20%;
+
 }
 
 .text {
@@ -29,7 +35,7 @@ if(isset($_SESSION['SID'])){
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Learn and Earn</title>
+    <title>Student | Dashboard </title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -52,13 +58,17 @@ if(isset($_SESSION['SID'])){
 
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
+
+
+
 </head>
 
-
 <body>
+
     <!-- ======= Header ======= -->
     <header id="header" class="fixed-top d-flex align-items-center">
         <div class="container d-flex align-items-center">
+
             <div class="logo me-auto">
                 <h1><a href="index.html">Learn and Earn</a></h1>
                 <!-- Uncomment below if you prefer to use an image logo -->
@@ -100,11 +110,13 @@ if(isset($_SESSION['SID'])){
                 <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></i></a> -->
             </div>
 
+
         </div>
     </header><!-- End Header -->
 
     <!--  <!-- ======= Hero Section ======= -->
     <!-- <section id="hero">
+
     <div class="container">
       <div class="row">
         <div class="col-lg-6 pt-5 pt-lg-0 order-2 order-lg-1 d-flex flex-column justify-content-center" data-aos="fade-up">
@@ -119,27 +131,33 @@ if(isset($_SESSION['SID'])){
         </div>
       </div>
     </div>
+
   </section> -->
     <!-- End Hero --> -->
 
     <main id="main">
 
         <!-- ======= About Section ======= -->
-        <?php $sql="select * from student_details where Student_Id=1";
+        <?php $sql="select * from student_details where Student_Id=$_SESSION[student_id]";
           $result=mysqli_query($conn,$sql);
           $val = mysqli_fetch_assoc($result);
     ?>
         <section id="about" class="about">
+          
             <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                       <h2>Student Details</h2>
+                    </div>
 
                 <div class="row">
                     <div class="col-lg-4" data-aos="zoom-in">
                         <img style="width:250px;height: 250px;" src="<?php echo $val['photo'] ?>" class="img-fluid"
-                            alt="">
+                            alt="Upload your image">
                     </div>
+                    
                     <div class="col-lg-8 d-flex flex-column justify-contents-center" data-aos="fade-left">
                         <div class="content pt-4 pt-lg-0">
-                            <h3>Bio</h3>
+                            <!-- <h3>Student - Bio</h3> -->
                             <p class="fst-italic">
 
                             </p>
@@ -170,12 +188,14 @@ if(isset($_SESSION['SID'])){
                                         <td>:</td>
                                         <td class="text"><?php echo $val['Amount'] ?></td>
                                     </tr>
+                                    <tr>
+                                        <td class="heading">About</td>
+                                        <td>:</td>
+                                        <td class="text"><?php echo $val['Bio'] ?></td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <br><br>
-                            <p>
-                                <?php echo $val['Bio'] ?>
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -188,7 +208,6 @@ if(isset($_SESSION['SID'])){
 
                 <div class="section-title" data-aos="fade-up">
                     <h2>Assignments</h2>
-
                 </div>
 
                 <div class="row">
@@ -204,31 +223,17 @@ if(isset($_SESSION['SID'])){
 
                 <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
 
-                    <!-- <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-            <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-1.jpg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>App 1</h4>
-                <p>App</p>
-              </div>
-              <div class="portfolio-links">
-                <a href="assets/img/portfolio/portfolio-1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 1"><i class="bx bx-plus"></i></a>
-                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-              </div>
-            </div>
-          </div> -->
-
+        
 
                     <?php
                     $sql="SELECT * FROM tasks where Task_Status=1 and Student_id=$_SESSION[student_id]";
                     $result=mysqli_query($conn,$sql);
-                    // if(isset($result))
-                    // {
-                    //   echo "<script>window.alert('Hello !!!')</script>";
-                    // }
+                    
                      while( $val = mysqli_fetch_assoc($result))
                     {
-              ?>
+                    ?>
+                    <!-- <section id="services" class="services section-bg"> -->
+      
                     <div class=" portfolio-item filter-app" id=<?php echo $val['Task_id'] ?>
                         onclick="assignment_divert(this.id)">
                         <div style="margin-bottom: 2px;" class="portfolio-wrap">
@@ -243,10 +248,7 @@ if(isset($_SESSION['SID'])){
                     <?php
                     $sql="SELECT * FROM tasks where Task_Status=2 and Student_id=$_SESSION[student_id]";
                     $result=mysqli_query($conn,$sql);
-                    // if(isset($result))
-                    // {
-                    //   echo "<script>window.alert('Hello !!!')</script>";
-                    // }
+                    
                      while( $val = mysqli_fetch_assoc($result))
                     {
               ?>
@@ -266,10 +268,7 @@ if(isset($_SESSION['SID'])){
                     <?php
                     $sql="SELECT * FROM tasks where Task_Status=3 and Student_id=$_SESSION[student_id]";
                     $result=mysqli_query($conn,$sql);
-                    // if(isset($result))
-                    // {
-                    //   echo "<script>window.alert('Hello !!!')</script>";
-                    // }
+                    
                      while( $val = mysqli_fetch_assoc($result))
                     {
               ?>
@@ -300,6 +299,7 @@ if(isset($_SESSION['SID'])){
               </div>
             </div>
           </div>
+
           <div class="col-lg-4 col-md-6 portfolio-item filter-card">
             <div class="portfolio-wrap">
               <img src="assets/img/portfolio/portfolio-4.jpg" class="img-fluid" alt="">
@@ -313,6 +313,7 @@ if(isset($_SESSION['SID'])){
               </div>
             </div>
           </div>
+
           <div class="col-lg-4 col-md-6 portfolio-item filter-web">
             <div class="portfolio-wrap">
               <img src="assets/img/portfolio/portfolio-5.jpg" class="img-fluid" alt="">
@@ -326,6 +327,7 @@ if(isset($_SESSION['SID'])){
               </div>
             </div>
           </div>
+
           <div class="col-lg-4 col-md-6 portfolio-item filter-app">
             <div class="portfolio-wrap">
               <img src="assets/img/portfolio/portfolio-6.jpg" class="img-fluid" alt="">
@@ -339,6 +341,7 @@ if(isset($_SESSION['SID'])){
               </div>
             </div>
           </div>
+
           <div class="col-lg-4 col-md-6 portfolio-item filter-card">
             <div class="portfolio-wrap">
               <img src="assets/img/portfolio/portfolio-7.jpg" class="img-fluid" alt="">
@@ -352,6 +355,7 @@ if(isset($_SESSION['SID'])){
               </div>
             </div>
           </div>
+
           <div class="col-lg-4 col-md-6 portfolio-item filter-card">
             <div class="portfolio-wrap">
               <img src="assets/img/portfolio/portfolio-8.jpg" class="img-fluid" alt="">
@@ -365,6 +369,7 @@ if(isset($_SESSION['SID'])){
               </div>
             </div>
           </div>
+
           <div class="col-lg-4 col-md-6 portfolio-item filter-web">
             <div class="portfolio-wrap">
               <img src="assets/img/portfolio/portfolio-9.jpg" class="img-fluid" alt="">
@@ -391,6 +396,7 @@ if(isset($_SESSION['SID'])){
     ?>
         <!-- <section id="features" class="features">
       <div class="container">
+
         <div class="row">
           <div class="col-lg-6 mt-2 mb-tg-0 order-2 order-lg-1">
             <ul class="nav nav-tabs flex-column">
@@ -445,6 +451,7 @@ if(isset($_SESSION['SID'])){
                   <img src="assets/img/features-1.png" alt="" class="img-fluid">
                 </figure> -->
         <!-- </div>
+
               <div class="tab-pane" id="tab-2"> -->
         <?php
                     // $sql="SELECT * FROM tasks where Task_Status=2 and Student_id=$_SESSION[student_id]";
@@ -461,6 +468,7 @@ if(isset($_SESSION['SID'])){
                 <p style="text-align: center;">Due: <?php //echo $val['Due_Timestamp'] ?></p>
               </div> -->
         <!--  <?php //} ?>
+
                 <figure>
                   <img src="assets/img/features-2.png" alt="" class="img-fluid">
                 </figure>
@@ -493,6 +501,7 @@ if(isset($_SESSION['SID'])){
             </div>
           </div>
         </div>
+
       </div>
     </section> -->
         <!-- End Features Section -->
@@ -500,10 +509,12 @@ if(isset($_SESSION['SID'])){
         <!-- ======= Services Section ======= -->
         <!--  <section id="services" class="services section-bg">
       <div class="container">
+
         <div class="section-title" data-aos="fade-up">
           <h2>Services</h2>
           <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
         </div>
+
         <div class="row">
           <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in">
             <div class="icon-box icon-box-pink">
@@ -512,6 +523,7 @@ if(isset($_SESSION['SID'])){
               <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate</p>
             </div>
           </div>
+
           <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="100">
             <div class="icon-box icon-box-cyan">
               <div class="icon"><i class="bx bx-file"></i></div>
@@ -519,6 +531,7 @@ if(isset($_SESSION['SID'])){
               <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla</p>
             </div>
           </div>
+
           <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="200">
             <div class="icon-box icon-box-green">
               <div class="icon"><i class="bx bx-tachometer"></i></div>
@@ -526,6 +539,7 @@ if(isset($_SESSION['SID'])){
               <p class="description">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim</p>
             </div>
           </div>
+
           <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="300">
             <div class="icon-box icon-box-blue">
               <div class="icon"><i class="bx bx-world"></i></div>
@@ -533,7 +547,9 @@ if(isset($_SESSION['SID'])){
               <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum</p>
             </div>
           </div>
+
         </div>
+
       </div>
     </section> -->
         <!-- End Services Section -->
@@ -543,6 +559,7 @@ if(isset($_SESSION['SID'])){
         <!-- ======= Cta Section ======= -->
         <!-- <section id="cta" class="cta">
       <div class="container">
+
         <div class="row" data-aos="zoom-in">
           <div class="col-lg-9 text-center text-lg-start">
             <h3>Call To Action</h3>
@@ -552,6 +569,7 @@ if(isset($_SESSION['SID'])){
             <a class="cta-btn align-middle" href="#">Call To Action</a>
           </div>
         </div>
+
       </div>
     </section> -->
         <!-- End Cta Section -->
@@ -559,12 +577,15 @@ if(isset($_SESSION['SID'])){
         <!-- ======= Testimonials Section ======= -->
         <!-- <section id="testimonials" class="testimonials">
       <div class="container">
+
         <div class="section-title" data-aos="fade-up">
           <h2>Testimonials</h2>
           <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
         </div>
+
         <div class="testimonials-slider swiper-container" data-aos="fade-up" data-aos-delay="100">
           <div class="swiper-wrapper">
+
             <div class="swiper-slide">
               <div class="testimonial-item">
                 <p>
@@ -637,6 +658,7 @@ if(isset($_SESSION['SID'])){
         <!-- /div>
           <div class="swiper-pagination"></div>
         </div>
+
       </div>
     </section> -->
         <!-- End Testimonials Section -->
@@ -644,11 +666,14 @@ if(isset($_SESSION['SID'])){
         <!-- ======= Team Section ======= -->
         <!-- <section id="team" class="team">
       <div class="container">
+
         <div class="section-title" data-aos="fade-up">
           <h2>Team</h2>
           <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
         </div>
+
         <div class="row">
+
           <div class="col-lg-4 col-md-6">
             <div class="member" data-aos="zoom-in">
               <div class="pic"><img src="assets/img/team/team-1.jpg" class="img-fluid" alt=""></div>
@@ -664,6 +689,7 @@ if(isset($_SESSION['SID'])){
               </div>
             </div>
           </div>
+
           <div class="col-lg-4 col-md-6">
             <div class="member" data-aos="zoom-in" data-aos-delay="100">
               <div class="pic"><img src="assets/img/team/team-2.jpg" class="img-fluid" alt=""></div>
@@ -679,6 +705,7 @@ if(isset($_SESSION['SID'])){
               </div>
             </div>
           </div>
+
           <div class="col-lg-4 col-md-6">
             <div class="member" data-aos="zoom-in" data-aos-delay="200">
               <div class="pic"><img src="assets/img/team/team-3.jpg" class="img-fluid" alt=""></div>
@@ -694,7 +721,9 @@ if(isset($_SESSION['SID'])){
               </div>
             </div>
           </div>
+
         </div>
+
       </div>
     </section> -->
         <!-- End Team Section -->
@@ -702,52 +731,64 @@ if(isset($_SESSION['SID'])){
         <!-- ======= Clients Section ======= -->
         <!-- <section id="clients" class="clients">
       <div class="container">
+
         <div class="section-title" data-aos="fade-up">
           <h2>Clients</h2>
           <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
         </div>
+
         <div class="row no-gutters clients-wrap clearfix wow fadeInUp">
+
           <div class="col-lg-3 col-md-4 col-xs-6">
             <div class="client-logo" data-aos="zoom-in">
               <img src="assets/img/clients/client-1.png" class="img-fluid" alt="">
             </div>
           </div>
+
           <div class="col-lg-3 col-md-4 col-xs-6">
             <div class="client-logo" data-aos="zoom-in" data-aos-delay="100">
               <img src="assets/img/clients/client-2.png" class="img-fluid" alt="">
             </div>
           </div>
+
           <div class="col-lg-3 col-md-4 col-xs-6">
             <div class="client-logo" data-aos="zoom-in" data-aos-delay="150">
               <img src="assets/img/clients/client-3.png" class="img-fluid" alt="">
             </div>
           </div>
+
           <div class="col-lg-3 col-md-4 col-xs-6">
             <div class="client-logo" data-aos="zoom-in" data-aos-delay="200">
               <img src="assets/img/clients/client-4.png" class="img-fluid" alt="">
             </div>
           </div>
+
           <div class="col-lg-3 col-md-4 col-xs-6">
             <div class="client-logo" data-aos="zoom-in" data-aos-delay="250">
               <img src="assets/img/clients/client-5.png" class="img-fluid" alt="">
             </div>
           </div>
+
           <div class="col-lg-3 col-md-4 col-xs-6">
             <div class="client-logo" data-aos="zoom-in" data-aos-delay="300">
               <img src="assets/img/clients/client-6.png" class="img-fluid" alt="">
             </div>
           </div>
+
           <div class="col-lg-3 col-md-4 col-xs-6">
             <div class="client-logo" data-aos="zoom-in" data-aos-delay="350">
               <img src="assets/img/clients/client-7.png" class="img-fluid" alt="">
             </div>
           </div>
+
           <div class="col-lg-3 col-md-4 col-xs-6" data-aos="zoom-in" data-aos-delay="400">
             <div class="client-logo">
               <img src="assets/img/clients/client-8.png" class="img-fluid" alt="">
             </div>
           </div>
+
         </div>
+
       </div>
     </section> -->
         <!-- End Clients Section -->
@@ -755,11 +796,14 @@ if(isset($_SESSION['SID'])){
         <!-- ======= Pricing Section ======= -->
         <!-- <section id="pricing" class="pricing section-bg">
       <div class="container">
+
         <div class="section-title" data-aos="fade-up">
           <h2>Pricing</h2>
           <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
         </div>
+
         <div class="row">
+
           <div class="col-lg-3 col-md-6">
             <div class="box" data-aos="zoom-in">
               <h3>Free</h3>
@@ -776,6 +820,7 @@ if(isset($_SESSION['SID'])){
               </div>
             </div>
           </div>
+
           <div class="col-lg-3 col-md-6 mt-4 mt-md-0">
             <div class="box featured" data-aos="zoom-in" data-aos-delay="100">
               <h3>Business</h3>
@@ -792,6 +837,7 @@ if(isset($_SESSION['SID'])){
               </div>
             </div>
           </div>
+
           <div class="col-lg-3 col-md-6 mt-4 mt-lg-0">
             <div class="box" data-aos="zoom-in" data-aos-delay="200">
               <h3>Developer</h3>
@@ -808,6 +854,7 @@ if(isset($_SESSION['SID'])){
               </div>
             </div>
           </div>
+
           <div class="col-lg-3 col-md-6 mt-4 mt-lg-0">
             <div class="box" data-aos="zoom-in" data-aos-delay="300">
               <span class="advanced">Advanced</span>
@@ -825,7 +872,9 @@ if(isset($_SESSION['SID'])){
               </div>
             </div>
           </div>
+
         </div>
+
       </div>
     </section> -->
         <!-- End Pricing Section -->
@@ -833,10 +882,13 @@ if(isset($_SESSION['SID'])){
         <!-- ======= F.A.Q Section ======= -->
         <!--  <section id="faq" class="faq">
       <div class="container">
+
         <div class="section-title" data-aos="fade-up">
           <h2>Frequently Asked Questions</h2>
         </div>
+
         <ul class="faq-list">
+
           <li>
             <div data-bs-toggle="collapse" class="collapsed question" href="#faq1">Non consectetur a erat nam at lectus urna duis? <i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
             <div id="faq1" class="collapse" data-bs-parent=".faq-list">
@@ -845,6 +897,7 @@ if(isset($_SESSION['SID'])){
               </p>
             </div>
           </li>
+
           <li>
             <div data-bs-toggle="collapse" href="#faq2" class="collapsed question">Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque? <i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
             <div id="faq2" class="collapse" data-bs-parent=".faq-list">
@@ -853,6 +906,7 @@ if(isset($_SESSION['SID'])){
               </p>
             </div>
           </li>
+
           <li>
             <div data-bs-toggle="collapse" href="#faq3" class="collapsed question">Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi? <i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
             <div id="faq3" class="collapse" data-bs-parent=".faq-list">
@@ -861,6 +915,7 @@ if(isset($_SESSION['SID'])){
               </p>
             </div>
           </li>
+
           <li>
             <div data-bs-toggle="collapse" href="#faq4" class="collapsed question">Ac odio tempor orci dapibus. Aliquam eleifend mi in nulla? <i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
             <div id="faq4" class="collapse" data-bs-parent=".faq-list">
@@ -869,6 +924,7 @@ if(isset($_SESSION['SID'])){
               </p>
             </div>
           </li>
+
           <li>
             <div data-bs-toggle="collapse" href="#faq5" class="collapsed question">Tempus quam pellentesque nec nam aliquam sem et tortor consequat? <i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
             <div id="faq5" class="collapse" data-bs-parent=".faq-list">
@@ -877,6 +933,7 @@ if(isset($_SESSION['SID'])){
               </p>
             </div>
           </li>
+
           <li>
             <div data-bs-toggle="collapse" href="#faq6" class="collapsed question">Tortor vitae purus faucibus ornare. Varius vel pharetra vel turpis nunc eget lorem dolor? <i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
             <div id="faq6" class="collapse" data-bs-parent=".faq-list">
@@ -885,7 +942,9 @@ if(isset($_SESSION['SID'])){
               </p>
             </div>
           </li>
+
         </ul>
+
       </div>
     </section> -->
         <!-- End Frequently Asked Questions Section -->
@@ -893,10 +952,13 @@ if(isset($_SESSION['SID'])){
         <!-- ======= Contact Section ======= -->
         <!-- <section id="contact" class="contact section-bg">
       <div class="container">
+
         <div class="section-title" data-aos="fade-up">
           <h2>Contact Us</h2>
         </div>
+
         <div class="row">
+
           <div class="col-lg-5 d-flex align-items-stretch" data-aos="fade-right">
             <div class="info">
               <div class="address">
@@ -904,19 +966,24 @@ if(isset($_SESSION['SID'])){
                 <h4>Location:</h4>
                 <p>A108 Adam Street, New York, NY 535022</p>
               </div>
+
               <div class="email">
                 <i class="bi bi-envelope"></i>
                 <h4>Email:</h4>
                 <p>info@example.com</p>
               </div>
+
               <div class="phone">
                 <i class="bi bi-phone"></i>
                 <h4>Call:</h4>
                 <p>+1 5589 55488 55s</p>
               </div>
+
               <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621" frameborder="0" style="border:0; width: 100%; height: 290px;" allowfullscreen></iframe>
             </div>
+
           </div>
+
           <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch" data-aos="fade-left">
             <form action="forms/contact.php" method="post" role="form" class="php-email-form">
               <div class="row">
@@ -945,7 +1012,9 @@ if(isset($_SESSION['SID'])){
               <div class="text-center"><button type="submit">Send Message</button></div>
             </form>
           </div>
+
         </div>
+
       </div>
     </section> -->
         <!-- End Contact Section -->
@@ -1061,11 +1130,11 @@ if(isset($_SESSION['SID'])){
 </body>
 
 </html>
-<?php
-}
+<?php } 
 else
 {
-  echo '<script>alert("Invalid Entry")</script>';
-  header("Location: ../login");
+  echo "<script>window.alert($_SESSION[student_id])</script>";
+  echo "<script>window.location.href='../login/'</script>";
 }
+
 ?>
